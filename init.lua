@@ -111,6 +111,7 @@ require('lazy').setup({
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
+  {"folke/zen-mode.nvim", opts = {}},
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -284,7 +285,56 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+vim.opt.swapfile = false
+vim.opt.colorcolumn = "120"
+
 -- [[ Basic Keymaps ]]
+
+-- keymap for zen mode
+vim.keymap.set("n", "<leader>zz", function()
+    require("zen-mode").setup {
+        window = {
+            width = 90,
+            options = { }
+        },
+    }
+    require("zen-mode").toggle()
+    vim.wo.wrap = false
+    vim.wo.number = true
+    vim.wo.rnu = true
+end)
+
+
+vim.keymap.set("n", "<leader>zZ", function()
+    require("zen-mode").setup {
+        window = {
+            width = 80,
+            options = { }
+        },
+    }
+    require("zen-mode").toggle()
+    vim.wo.wrap = false
+    vim.wo.number = false
+    vim.wo.rnu = false
+    vim.opt.colorcolumn = "0"
+end)
+
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex) -- opening netrwd
+
+-- moves selection, it even indents if it's inside an if statement or function, I know cool af
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- keeps cursor at the beginning of 
+vim.keymap.set("n", "J", "mzJ`z")
+
+-- page jumps but keeping the cursor at the center
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+vim.keymap.set("n", "Q", "<nop>") -- never use capital quotes
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format) -- format stuff
+vim.keymap.set("n", "<leader>srw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word 
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
