@@ -150,6 +150,12 @@ require('lazy').setup({
     },
   },
 
+  { -- auto complete quotes, parenthesis and brackets
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    opts = {} -- this is equalent to setup({}) function
+  },
+
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
@@ -215,6 +221,13 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+        -- add any options here
+    },
+    lazy = false,
+  }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
