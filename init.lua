@@ -108,7 +108,8 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-
+  -- Toggle terminal 
+  {'akinsho/toggleterm.nvim', version = "*", config = true},
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
   {"folke/zen-mode.nvim", opts = {}},
@@ -225,6 +226,14 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
+  -- harpoon setup
+  "nvim-lua/plenary.nvim", -- don't forget to add this one if you don't have it yet!
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    requires = { {"nvim-lua/plenary.nvim"} }
+  },
+
   {
     'numToStr/Comment.nvim',
     opts = {
@@ -265,6 +274,8 @@ vim.o.mouse = 'a'
 --  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
 
+vim.o.guicursor = 'n-v-c-sm:block,ci-ve:ver25,r-cr-o:hor20,i:block-blinkwait700-blinkoff400-blinkon250-Cursor/lCursor'
+
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -293,35 +304,6 @@ vim.opt.colorcolumn = "120"
 
 -- [[ Basic Keymaps ]]
 
--- keymap for zen mode
-vim.keymap.set("n", "<leader>zz", function()
-    require("zen-mode").setup {
-        window = {
-            width = 90,
-            options = { }
-        },
-    }
-    require("zen-mode").toggle()
-    vim.wo.wrap = false
-    vim.wo.number = true
-    vim.wo.rnu = true
-end)
-
-
-vim.keymap.set("n", "<leader>zZ", function()
-    require("zen-mode").setup {
-        window = {
-            width = 80,
-            options = { }
-        },
-    }
-    require("zen-mode").toggle()
-    vim.wo.wrap = false
-    vim.wo.number = false
-    vim.wo.rnu = false
-    vim.opt.colorcolumn = "0"
-end)
-
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex) -- opening netrwd
 
 -- moves selection, it even indents if it's inside an if statement or function, I know cool af
@@ -338,6 +320,21 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "Q", "<nop>") -- never use capital quotes
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format) -- format stuff
 vim.keymap.set("n", "<leader>srw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word 
+
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+vim.keymap.set("n", "<C-a>", function() harpoon:list():append() end)
+vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
